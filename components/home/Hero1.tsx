@@ -24,7 +24,7 @@ export default function Hero1({ onTypingComplete }: SplineHeroProps) {
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
-      wheelMultiplier: 1.2,
+      wheelMultiplier: 0.8,
     })
 
     lenisRef.current = lenis

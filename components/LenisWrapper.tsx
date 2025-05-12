@@ -14,7 +14,7 @@ export function SmoothScrolling({ children }: SmoothScrollingProps) {
       root
       options={{
         lerp: 0.1, // Smoothness factor (0-1)
-        wheelMultiplier: 1.2,
+        wheelMultiplier: 0.8,
         smoothWheel: true, // Enable smooth wheel scrolling
       }}
     >

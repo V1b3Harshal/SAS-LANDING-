@@ -5,7 +5,6 @@ import { BlurHeader } from '@/components/ui/BlurHeader';
 import { Inter, Outfit, Manrope, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import Footer from "@/components/Footer"
-import { SmoothScrolling } from "@/components/LenisWrapper"
 import { GsapProvider } from "@/components/GsapProvider"
 
 // Font configuration with optimized loading
@@ -74,29 +73,34 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body
-        className={`${spaceGrotesk.variable} ${manrope.variable} ${inter.variable} ${outfit.variable} font-manrope antialiased`}
-        style={{
-          // Prevent text size adjustment on mobile
-          WebkitTextSizeAdjust: '100%',
-          textSizeAdjust: '100%',
-          // Prevent tap highlight
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-          <SmoothScrolling>
-            <main className="flex min-h-screen flex-col">
-              <BlurHeader />
-              <div className="flex-grow pb-[200px] relative">
-                <GsapProvider>
-                  {children}
-                </GsapProvider>
-              </div>
-              <BlurFooter />
-              <Footer />
-            </main>
-          </SmoothScrolling>
-      </body>
+      
+<body
+  className={`${spaceGrotesk.variable} ${manrope.variable} ${inter.variable} ${outfit.variable} font-manrope antialiased`}
+  style={{
+    WebkitTextSizeAdjust: '100%',
+    textSizeAdjust: '100%',
+    WebkitTapHighlightColor: 'transparent',
+    overflowX: 'hidden', // Prevent horizontal scroll
+  }}
+>
+  <div 
+    style={{
+      transform: 'scale(0.75)',
+      transformOrigin: 'top center',
+      width: '133.33%',
+      height: '133.33vh',
+    }}
+  >
+    <main className="flex min-h-screen flex-col">
+      <BlurHeader />
+      <div className="flex-grow pb-[200px] relative">
+        <GsapProvider>{children}</GsapProvider>
+      </div>
+      <BlurFooter />
+      <Footer />
+    </main>
+  </div>
+</body>
     </html>
   )
 }

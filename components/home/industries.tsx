@@ -101,7 +101,7 @@ const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
       const lenis = new Lenis({
         lerp: 0.1,
         smoothWheel: true,
-        wheelMultiplier: 1.2,
+        wheelMultiplier: 0.8,
       })
   
       lenisRef.current = lenis
