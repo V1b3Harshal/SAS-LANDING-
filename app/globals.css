@@ -55,7 +55,7 @@ body {
   color: rgb(var(--foreground-rgb));
   overflow-x: hidden;
 }
-
+font-size: clamp(1.5rem, 5vw, 3rem);
 /* Ensure sections don't overlap */
 section {
   position: relative;

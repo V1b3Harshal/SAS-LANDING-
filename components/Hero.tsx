@@ -212,15 +212,15 @@ const Hero: FC = () => {
   }
 
   return (
-    <section className="relative overflow-hidden min-h-[100vh] bg-trnsparent">
+    <section className="relative overflow-x-hidden w-full min-h-[100dvh] bg-transparent">
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 rounded-b-4xl bg-[url('/grid.svg')] opacity-2"></div>
         <div className="absolute top-0 right-0 w-1/3 h-full"></div>
         <div className="absolute bottom-0 left-0 w-full h-1/3"></div>
       </div>
 
-      <div className="relative z-10 pt-28 md:pt-32 pb-20 md:pb-24">
-        <div className="container mx-auto px-4">
+      <div className="relative z-10 pt-20 md:pt-28 lg:pt-32 pb-16 md:pb-20 lg:pb-24">
+  <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <motion.div
               ref={ref}
@@ -240,9 +240,9 @@ const Hero: FC = () => {
               </motion.div>
 
               <motion.h1
-                variants={itemVariants}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white"
-              >
+  variants={itemVariants}
+  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight text-white"
+>
                 Intelligent <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Voice AI</span> for{" "}
                 <FlipWords
                   words={flipWords}
@@ -294,13 +294,13 @@ const Hero: FC = () => {
                 </Button>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ y: -5 }}
-                    className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 hover:border-indigo-400/30 transition-all"
-                  >
+              <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
+  {features.map((feature, index) => (
+    <motion.div
+      key={index}
+      whileHover={{ y: -5 }}
+      className="bg-white/5 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/10 hover:border-indigo-400/30 transition-all"
+    >
                     <div className={`w-10 h-10 rounded-lg mb-3 flex items-center justify-center bg-gradient-to-br ${index === 0 ? 'from-indigo-500/20 to-purple-500/20' : index === 1 ? 'from-blue-500/20 to-teal-500/20' : 'from-purple-500/20 to-pink-500/20'} border border-white/10`}>
                       {feature.icon}
                     </div>
@@ -336,7 +336,7 @@ const Hero: FC = () => {
             >
               <div className="relative w-full max-w-lg">
                 <div className="relative bg-gray-900/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-1 w-full border border-white/10 overflow-hidden">
-                  <div className="relative bg-gray-950 rounded-2xl overflow-hidden h-[580px] flex flex-col">
+                <div className="relative bg-gray-950 rounded-2xl overflow-hidden min-h-[400px] md:h-[500px] lg:h-[580px] flex flex-col">
                     <div className="flex justify-between items-center px-4 py-2 text-xs text-gray-400">
                       <span>5G</span>
                       <span>10:24 AM</span>
