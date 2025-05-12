@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useRef } from "react"
 import Link from "next/link"
-import { motion} from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import {
   Mic,
@@ -198,20 +198,22 @@ FeatureCard.displayName = "FeatureCard"
 
 const KeyFeatures: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const lenisRef = useRef<Lenis | null>(null)
-  
-  // Initialize Lenis with optimized settings
+  const lenisRef = useRef<Lenis | null>(null) // Add Lenis ref
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  })
+  // Initialize Lenis
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
-      wheelMultiplier: 0.8,
-      duration: 1.2,
+      wheelMultiplier: 1.2,
     })
 
     lenisRef.current = lenis
 
-    const raf = (time: number) => {
+    function raf(time: number) {
       lenis.raf(time)
       requestAnimationFrame(raf)
     }
@@ -223,6 +225,7 @@ const KeyFeatures: React.FC = () => {
       lenisRef.current = null
     }
   }, [])
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"])
 
   const [titleRef, titleInView] = useInView({
     triggerOnce: true,
@@ -232,7 +235,10 @@ const KeyFeatures: React.FC = () => {
   return (
     <div ref={containerRef} className="relative overflow-hidden" id="features">
       <div className="relative">
-        <div className="relative z-20 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+        <motion.div
+          style={{ y: contentY, willChange: "transform, opacity" }}
+          className="relative z-20 pt-16 pb-12 px-4 sm:px-6 lg:px-8"
+        >
           <motion.div
             ref={titleRef}
             initial={{ opacity: 0, y: 20 }}
@@ -283,16 +289,16 @@ const KeyFeatures: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <section className="relative py-12 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-12 px-4 sm:px-6 lg:px-8 ">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+            viewport={{ once: true }}
             className="text-center mb-12"
           >
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 font-space">Enterprise-Grade Solutions</h2>
@@ -327,10 +333,10 @@ const KeyFeatures: React.FC = () => {
           </div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+            viewport={{ once: true }}
             className="mt-16 text-center"
           >
             <Link href="/#contact">

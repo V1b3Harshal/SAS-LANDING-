@@ -141,7 +141,7 @@ const Hero: FC = () => {
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
-      wheelMultiplier: 0.8,
+      wheelMultiplier: 1.2,
     })
 
     lenisRef.current = lenis
