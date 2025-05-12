@@ -13,30 +13,29 @@ import { GsapProvider } from "@/components/GsapProvider"
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space",
-  display: 'block',
-  adjustFontFallback: false,
-})
+  display: 'swap', // Changed from 'block' to 'swap'
+});
 
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
-  display: 'block',
+  display: 'swap', // Changed from 'block' to 'swap'
   adjustFontFallback: true,
-})
+});
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: 'block',
+  display: 'swap', // Changed from 'block' to 'swap'
   adjustFontFallback: true,
-})
+});
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
-  display: 'block',
+  display: 'swap', // Changed from 'block' to 'swap'
   adjustFontFallback: true,
-})
+});
 
 export const metadata: Metadata = {
   title: "Sampark AI | Voice Agent for Call Centers & Reception",
