@@ -1,10 +1,11 @@
 "use client"
-import type React from "react"
+import { useEffect,useRef } from "react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
+import Lenis from "lenis"
 
 interface Industry {
   name: string
@@ -83,13 +84,40 @@ const industries: Industry[] = [
 interface IndustryCardProps {
   industry: Industry
 }
-
+const Industries: React.FC = () => {
+  const lenisRef = useRef<Lenis | null>(null) // Properly declare lenisRef
+  const [titleRef, titleInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  })
 const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
   const isLarge = industry.size === "lg"
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
+    // Initialize Lenis
+    useEffect(() => {
+      const lenis = new Lenis({
+        lerp: 0.1,
+        smoothWheel: true,
+        wheelMultiplier: 1.2,
+      })
+  
+      lenisRef.current = lenis
+  
+      function raf(time: number) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+      }
+  
+      requestAnimationFrame(raf)
+  
+      return () => {
+        lenis.destroy()
+        lenisRef.current = null
+      }
+    }, [])
 
   return (
     <motion.div
@@ -160,11 +188,7 @@ const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
   )
 }
 
-const Industries: React.FC = () => {
-  const [titleRef, titleInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
+
 
   return (
     <div className="relative overflow-hidden" id="industries">

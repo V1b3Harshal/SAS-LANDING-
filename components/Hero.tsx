@@ -6,6 +6,7 @@ import { PhoneCall, Briefcase , Home, HeartPulse, Clock, CheckCircle, User } fro
 import { motion, useAnimation, useInView, AnimatePresence } from "framer-motion"
 import { TypewriterEffect } from "@/components/ui/typewriter-effect"
 import { FlipWords } from "@/components/ui/flip-words"
+import Lenis from "lenis"
 
 type CallStep = {
   user: string
@@ -133,6 +134,30 @@ const Hero: FC = () => {
   const [currentScenario, setCurrentScenario] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
   const [isCallActive, setIsCallActive] = useState(false)
+  const lenisRef = useRef<Lenis | null>(null)
+
+  // Initialize Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true,
+      wheelMultiplier: 1.2,
+    })
+
+    lenisRef.current = lenis
+
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    return () => {
+      lenis.destroy()
+      lenisRef.current = null
+    }
+  }, [])
 
   useEffect(() => {
     if (inView) {

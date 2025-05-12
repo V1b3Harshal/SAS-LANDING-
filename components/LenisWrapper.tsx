@@ -14,7 +14,7 @@ export function SmoothScrolling({ children }: SmoothScrollingProps) {
       root
       options={{
         lerp: 0.1, // Smoothness factor (0-1)
-        duration: 1.5, // Animation duration in seconds
+        wheelMultiplier: 1.2,
         smoothWheel: true, // Enable smooth wheel scrolling
       }}
     >

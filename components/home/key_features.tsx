@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import Link from "next/link"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useInView } from "react-intersection-observer"
@@ -17,6 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
+import Lenis from "lenis"
 
 interface Feature {
   title: string
@@ -197,11 +198,33 @@ FeatureCard.displayName = "FeatureCard"
 
 const KeyFeatures: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const lenisRef = useRef<Lenis | null>(null) // Add Lenis ref
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   })
+  // Initialize Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true,
+      wheelMultiplier: 1.2,
+    })
 
+    lenisRef.current = lenis
+
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    return () => {
+      lenis.destroy()
+      lenisRef.current = null
+    }
+  }, [])
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"])
 
   const [titleRef, titleInView] = useInView({

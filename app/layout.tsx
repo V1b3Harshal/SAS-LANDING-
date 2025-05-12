@@ -12,27 +12,27 @@ import { GsapProvider } from "@/components/GsapProvider"
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space",
-  display: 'swap', // Changed from 'block' to 'swap'
+  display: 'swap',
 });
 
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
-  display: 'swap', // Changed from 'block' to 'swap'
+  display: 'swap',
   adjustFontFallback: true,
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: 'swap', // Changed from 'block' to 'swap'
+  display: 'swap',
   adjustFontFallback: true,
 });
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
-  display: 'swap', // Changed from 'block' to 'swap'
+  display: 'swap',
   adjustFontFallback: true,
 });
 
@@ -52,9 +52,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  minimumScale: 1,
   maximumScale: 1,
   userScalable: false,
-  viewportFit: 'cover',
+  // Add interactive-widget to prevent browser UI from affecting layout
+  interactiveWidget: 'resizes-content',
 }
 
 interface RootLayoutProps {
@@ -68,9 +70,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {/* Preconnect to font resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Add this meta tag for Safari on iOS */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body
         className={`${spaceGrotesk.variable} ${manrope.variable} ${inter.variable} ${outfit.variable} font-manrope antialiased`}
+        style={{
+          // Prevent text size adjustment on mobile
+          WebkitTextSizeAdjust: '100%',
+          textSizeAdjust: '100%',
+          // Prevent tap highlight
+          WebkitTapHighlightColor: 'transparent',
+        }}
       >
           <SmoothScrolling>
             <main className="flex min-h-screen flex-col">
