@@ -33,7 +33,7 @@ export const TextGenerateEffect: React.FC<TextGenerateEffectProps> = ({
         delay: stagger(0.2),
       },
     )
-  }, [scope.current, animate, duration, filter])
+  },)
 
   const renderWords = () => {
     return (
