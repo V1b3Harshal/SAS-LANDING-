@@ -31,18 +31,18 @@ const scenarios: CallScenario[] = [
     icon: <Briefcase className="w-5 h-5" />,
     steps: [
       {
-        user: "Hello, I have a meeting with Mr. Khanna from Sales",
-        ai: "Namaskar! Welcome to TechNova Solutions. 🌟 Could you please share your name and company? I’ll notify Mr. Khanna’s team right away.",
+        user: "Good morning, I have a 11 AM appointment with Mr. Khanna from the Sales department",
+        ai: "Good morning! Welcome to TechNova Solutions. May I have your name and the company you represent? I'll immediately notify Mr. Khanna's team of your arrival.",
         action: "📞 Connecting to Sales team..."
       },
       {
-        user: "I’m Rahul from Delta Corp, 11 AM appointment",
-        ai: "Ah yes, Mr. Rahul! Mr. Khanna is in Conference Room 3. Aap directly 5th floor pe aa sakte hain—lift ke left side. Chai/coffee arrange kar du?",
+        user: "I'm Rahul Sharma from Delta Corp. We scheduled this meeting last week.",
+        ai: "Thank you, Mr. Sharma. I've located your appointment in our system. Mr. Khanna is currently in Conference Room 3 on the 5th floor. Would you like me to arrange for coffee or tea while you wait? The elevators are to your left.",
         action: "🔄 Notifying host..."
       },
       {
-        user: "Black coffee would be great, thanks!",
-        ai: "Sure thing! ☕ Your visitor pass is ready at reception. Security will escort you. Dhanyavaad for choosing TechNova—have a productive meeting!",
+        user: "A black coffee would be appreciated, thank you.",
+        ai: "Certainly, I'll have that prepared for you. Your visitor pass is ready at the reception desk, and our security personnel will escort you upstairs. Thank you for visiting TechNova Solutions - I hope you have a productive meeting with Mr. Khanna.",
         action: "✅ Visitor logged"
       }
     ]
@@ -55,18 +55,18 @@ const scenarios: CallScenario[] = [
     icon: <Home className="w-5 h-5" />,
     steps: [
       {
-        user: "We need office space in Bangalore, 10,000 sqft",
-        ai: "Namaste, sir! 🏢 At Prime Business Hub, we specialize in IT park spaces. Preferred location—Whitefield, ORR, or MG Road? Also, move-in timeline?",
+        user: "We're looking for approximately 10,000 square feet of office space in Bangalore.",
+        ai: "Thank you for contacting Prime Business Hub. We specialize in commercial properties in Bangalore's prime locations. Could you specify your preferred area - Whitefield, ORR, or MG Road? Also, may I know your target move-in date?",
         action: "🏢 Scanning listings..."
       },
       {
-        user: "Whitefield, next quarter",
-        ai: "Excellent! We have a plug-and-play space with cafeteria & gym at Prestige Tech Park. Virtual tour bhej du? Aaj site visit bhi ho sakta hai!",
+        user: "We prefer Whitefield and are looking to move in next quarter.",
+        ai: "Excellent choice. We currently have a premium plug-and-play office space available at Prestige Tech Park, complete with cafeteria and fitness facilities. Would you like me to send the virtual tour link? We can also arrange a site visit at your convenience.",
         action: "📲 Sharing brochure..."
       },
       {
-        user: "Yes, send details. We’ll visit tomorrow",
-        ai: "Done, sir! 🚀 Our agent Ravi will meet you at 11 AM. Security clearance ke liye just PAN card lekar aana. Welcome to Bangalore’s tech hub!",
+        user: "Please send the details. We can visit the property tomorrow.",
+        ai: "I've shared the complete property dossier with your email. Our representative Ravi will meet you at the property tomorrow at 11 AM. Please remember to bring PAN cards for security clearance. We look forward to showing you Bangalore's premier business location.",
         action: "📅 Visit scheduled"
       }
     ]
@@ -79,18 +79,18 @@ const scenarios: CallScenario[] = [
     icon: <HeartPulse className="w-5 h-5" />,
     steps: [
       {
-        user: "We want health checkup packages for our employees",
-        ai: "Namaskar! 👨‍⚕️ Apollo Corporate Health offers customized plans. Kitne employees ke liye chahiye? Basic tests (blood/sugar) ya executive full-body?",
+        user: "We're interested in health checkup packages for our employees.",
+        ai: "Thank you for considering Apollo Corporate Health. We offer comprehensive health screening packages. Could you share how many employees need coverage and whether you're interested in basic diagnostics or our executive full-body screening package?",
         action: "📋 Fetching packages..."
       },
       {
-        user: "100 employees, full-body with cardiac screening",
-        ai: "Shandaar! 💼 We’ll give 20% discount + free diet counseling. Aapka HR team se kal meeting fix kar lu? Hospital aa sakte hain ya hum aapke office aayein?",
+        user: "We need packages for 100 employees, including full-body checkups with cardiac screening.",
+        ai: "Understood. For your organization size, we can offer a 20% corporate discount along with complimentary diet counseling sessions. Would you like us to schedule a meeting with your HR team? We can arrange this either at our hospital or your office premises.",
         action: "📈 Preparing proposal..."
       },
       {
-        user: "Please send a rep to our office on Friday",
-        ai: "Confirmed! 🩺 Dr. Mehta will visit at 3 PM. Just ek authorization letter chahiye. Aapke employees ki health humari priority hai!",
+        user: "Please send a representative to our office this Friday.",
+        ai: "Confirmed. Dr. Mehta, our corporate health specialist, will visit your office this Friday at 3 PM. We'll just require an authorization letter from your organization. Your employees' health is our top priority, and we look forward to this partnership.",
         action: "🏥 Corporate booking"
       }
     ]
