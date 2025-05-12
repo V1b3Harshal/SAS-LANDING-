@@ -1,0 +1,346 @@
+"use client"
+import { useState, useEffect } from "react"
+import type React from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { ChevronDown, Menu, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { createPortal } from "react-dom"
+import { motion } from "framer-motion"
+
+interface NavItem {
+  title: string
+  href: string
+  dropdown?: {
+    title: string
+    description: string
+    href: string
+    icon: React.ReactNode
+  }[]
+  variant?: string
+}
+
+export default function Navbar() {
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [expandedItem, setExpandedItem] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+    }, 800)
+
+    return () => {
+      setMounted(false)
+      clearTimeout(timer)
+    }
+  }, [])
+
+  const navItems: NavItem[] = [
+    { title: "About", href: "#about" },
+    { title: "Features", href: "#features" },
+    { title: "Contact Us", href: "#contact" },
+  ]
+
+  const authItems: NavItem[] = [{ title: "Get Started", href: "/get-started", variant: "primary" }]
+
+  const handleMouseEnter = (title: string) => {
+    setOpenDropdown(title)
+  }
+
+  const handleMouseLeave = () => {
+    setOpenDropdown(null)
+  }
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+    if (mobileMenuOpen) setExpandedItem(null)
+  }
+
+  const toggleExpanded = (title: string) => {
+    setExpandedItem((current) => (current === title ? null : title))
+  }
+
+  const glassStyle = {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backdropFilter: "blur(16px)",
+    WebkitBackdropFilter: "blur(16px)",
+  }
+
+  const navbarVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { y: -20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  }
+
+  const logoVariants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  }
+
+  return (
+    <div className="relative z-50">
+      <motion.header
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoaded ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-7xl mx-auto backdrop-blur-md h-20 z-40 rounded-2xl"
+      />
+
+      <motion.header
+        initial="hidden"
+        animate={isLoaded ? "visible" : "hidden"}
+        variants={navbarVariants}
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-7xl mx-auto bg-black/50 z-50 rounded-2xl shadow-lg shadow-purple-500/10"
+      >
+        <div className="container mx-auto px-6 flex items-center justify-between h-20">
+          <div className="flex items-center gap-10">
+            <motion.div variants={logoVariants}>
+              <Link href="/" className="flex items-center group">
+                <div className="w-10 h-10 bg-white/10 flex items-center justify-center group-hover:shadow-md group-hover:shadow-purple-500/50 transition-all duration-300 rounded-lg">
+                  <Image
+                    src="/logo.png"
+                    alt="Sampark AI Logo"
+                    width={48}
+                    height={48}
+                    className="w-9 h-9 object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.onerror = null
+                      target.src =
+                        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiwyQTEwLDEwIDAgMCwxIDIyLDEyQTEwLDEwIDAgMCwxIDEyLDIyQTEwLDEwIDAgMCwxIDIsMTJBMTAsMTAgMCAwLDEgMTIsMk0xMiw0QTgsOCAwIDAsMCA0LDEyQTgsOCAwIDAsMCAxMiwyMEE4LDggMCAwLDAgMjAsMTJBOCw4IDAgMCwwIDEyLDRNNiwxM0gxOEg2WiIvPjwvc3ZnPg=="
+                    }}
+                  />
+                </div>
+                <motion.span variants={itemVariants} className="ml-3 text-white font-bold text-xl hidden sm:block">
+                  Sampark AI
+                </motion.span>
+              </Link>
+            </motion.div>
+
+            <nav className="hidden md:flex items-center space-x-4">
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  variants={itemVariants}
+                  custom={index}
+                  className="relative"
+                  onMouseEnter={() => item.dropdown && handleMouseEnter(item.title)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "px-4 py-3 text-base rounded-lg flex items-center text-gray-300 hover:text-white transition-colors relative group font-medium",
+                      openDropdown === item.title && "text-white",
+                    )}
+                  >
+                    {item.title}
+                    {item.dropdown && (
+                      <ChevronDown
+                        className={`ml-2 h-5 w-5 transition-transform duration-300 ${
+                          openDropdown === item.title ? "rotate-180" : ""
+                        }`}
+                      />
+                    )}
+                    <span className="absolute bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                  </Link>
+
+                  {item.dropdown && openDropdown === item.title && (
+                    <div className="absolute top-full left-0 mt-2 w-[300px] rounded-xl overflow-hidden">
+                      <div
+                        className="absolute inset-0 bg-black/30 backdrop-blur-[16px]"
+                        style={{ WebkitBackdropFilter: "blur(16px)" }}
+                      />
+                      <div className="relative z-10 border border-white/10 shadow-xl rounded-xl">
+                        <div className="p-3">
+                          {item.dropdown.map((dropdownItem) => (
+                            <Link
+                              key={dropdownItem.href}
+                              href={dropdownItem.href}
+                              className="flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors"
+                            >
+                              <div className="flex-shrink-0 mt-1 w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-gray-100">
+                                {dropdownItem.icon}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-white">{dropdownItem.title}</div>
+                                <div className="text-sm text-gray-400 mt-1">{dropdownItem.description}</div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {authItems.map((item, index) => (
+              <motion.div key={item.title} variants={itemVariants} custom={index + navItems.length}>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "hidden md:block px-6 py-3 text-base rounded-full transition-all duration-300 font-medium",
+                    item.variant === "text"
+                      ? "text-gray-300 hover:text-white hover:bg-white/5"
+                      : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-0.5",
+                  )}
+                >
+                  {item.title}
+                </Link>
+              </motion.div>
+            ))}
+
+            <motion.button
+              variants={itemVariants}
+              className="md:hidden p-3 focus:outline-none text-gray-300 hover:text-white transition-colors"
+              onClick={toggleMobileMenu}
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </motion.button>
+          </div>
+        </div>
+
+        {mounted &&
+          mobileMenuOpen &&
+          createPortal(
+            <div className="fixed inset-0 z-40 lg:hidden">
+              <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={toggleMobileMenu} />
+
+              <motion.div
+                initial={{ x: 300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 300, opacity: 0 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className={cn(
+                  "absolute top-28 right-4",
+                  "w-[300px] rounded-2xl",
+                  "shadow-xl shadow-purple-500/10",
+                  "overflow-hidden",
+                  "border border-white/10",
+                )}
+                style={glassStyle}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="p-3 space-y-2">
+                  {navItems.map((item) => (
+                    <div key={item.title} className="space-y-2">
+                      {item.dropdown ? (
+                        <>
+                          <button
+                            onClick={() => toggleExpanded(item.title)}
+                            className={cn(
+                              "flex w-full items-center justify-between",
+                              "px-5 py-4 text-base font-medium text-gray-100",
+                              "rounded-lg hover:bg-white/10 transition-colors",
+                            )}
+                          >
+                            <span>{item.title}</span>
+                            <ChevronDown
+                              className={cn(
+                                "h-5 w-5 transition-transform text-gray-300",
+                                expandedItem === item.title ? "rotate-180" : "",
+                              )}
+                            />
+                          </button>
+
+                          {expandedItem === item.title && (
+                            <div className="ml-3 pl-6 space-y-2 border-l-2 border-purple-500/30">
+                              {item.dropdown.map((subItem) => (
+                                <Link
+                                  key={subItem.href}
+                                  href={subItem.href}
+                                  className={cn(
+                                    "flex items-center px-5 py-3",
+                                    "text-base text-gray-300 hover:bg-white/10",
+                                    "rounded-lg transition-colors",
+                                  )}
+                                  onClick={toggleMobileMenu}
+                                >
+                                  {subItem.icon && <span className="mr-3 text-gray-300">{subItem.icon}</span>}
+                                  {subItem.title}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            "flex items-center px-5 py-4",
+                            "text-base font-medium text-gray-100",
+                            "rounded-lg hover:bg-white/10 transition-colors",
+                          )}
+                          onClick={toggleMobileMenu}
+                        >
+                          {item.title}
+                        </Link>
+                      )}
+                    </div>
+                  ))}
+
+                  <div className="mt-6 space-y-3 pt-4 border-t border-white/10">
+                    {authItems.map((item) => (
+                      <Link
+                        key={item.title}
+                        href={item.href}
+                        className={cn(
+                          "flex items-center justify-center px-6 py-4",
+                          "text-base font-semibold",
+                          "rounded-lg transition-all duration-300",
+                          item.variant === "text"
+                            ? "text-gray-100 hover:bg-white/10"
+                            : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white",
+                        )}
+                        onClick={toggleMobileMenu}
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </div>,
+            document.body,
+          )}
+      </motion.header>
+    </div>
+  )
+}
