@@ -116,14 +116,14 @@ export default function Navbar() {
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-7xl mx-auto backdrop-blur-md h-20 z-40 rounded-2xl"
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-10rem)] max-w-4xl mx-auto backdrop-blur-md h-20 z-40 rounded-2xl"
       />
 
       <motion.header
         initial="hidden"
         animate={isLoaded ? "visible" : "hidden"}
         variants={navbarVariants}
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-7xl mx-auto bg-black/50 z-50 rounded-2xl shadow-lg shadow-purple-500/10"
+        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-10rem)] max-w-4xl mx-auto bg-black/50 z-50 rounded-2xl shadow-lg shadow-purple-500/10"
       >
         <div className="container mx-auto px-6 flex items-center justify-between h-20">
           <div className="flex items-center gap-10">
