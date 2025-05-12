@@ -4,7 +4,6 @@ import { BlurFooter } from '@/components/ui/BlurFooter';
 import { BlurHeader } from '@/components/ui/BlurHeader';
 import { Inter, Outfit, Manrope, Space_Grotesk } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/Footer"
 import { SmoothScrolling } from "@/components/LenisWrapper"
 import { GsapProvider } from "@/components/GsapProvider"
@@ -73,7 +72,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={`${spaceGrotesk.variable} ${manrope.variable} ${inter.variable} ${outfit.variable} font-manrope antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrolling>
             <main className="flex min-h-screen flex-col">
               <BlurHeader />
@@ -86,7 +84,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <Footer />
             </main>
           </SmoothScrolling>
-        </ThemeProvider>
       </body>
     </html>
   )

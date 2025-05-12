@@ -1,5 +1,8 @@
+/* eslint-disable import/no-anonymous-default-export */
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import animate from 'tailwindcss-animate';
+
+export default {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,jsx,ts,tsx}",
@@ -9,13 +12,6 @@ module.exports = {
     "*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
       fontFamily: {
         sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
@@ -81,4 +77,4 @@ module.exports = {
     },
   },
   plugins: [animate],
-}
+};
