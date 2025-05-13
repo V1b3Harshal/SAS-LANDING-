@@ -18,7 +18,6 @@ import {
 } from "lucide-react"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import Lenis from "lenis"
-
 interface Feature {
   title: string
   description: string[]
@@ -134,51 +133,47 @@ const FeatureCard: React.FC<{ feature: Feature }> = React.memo(({ feature }) => 
     triggerOnce: true,
     threshold: 0.1,
   })
-
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`${isLarge ? "md:col-span-2" : ""} h-full`}
     >
-      <div className="relative h-full rounded-xl border border-gray-800/50 p-1.5 transition-all duration-300 hover:border-gray-700/70 group">
+      <div className="relative h-full rounded-xl border border-gray-800/50 p-1.2 transition-all duration-300 hover:border-gray-700/70 group">
         <GlowingEffect spread={30} glow={true} disabled={false} proximity={64} inactiveZone={0.01} variant="default" />
-        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-lg bg-gray-900/70 p-5 backdrop-blur-sm">
-          <div className="flex items-start gap-3">
+        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-lg bg-gray-900/70 p-4 backdrop-blur-sm">
+          <div className="flex items-start gap-2.4">
             <div className="text-gray-400 group-hover:text-white transition-colors">
-              <Icon className="h-5 w-5" />
+              <Icon className="h-3.75 w-3.75" /> {/* 25% smaller */}
             </div>
-            <h3 className="text-lg font-bold text-white font-space">{feature.title}</h3>
+            <h3 className="text-base font-bold text-white font-space">{feature.title}</h3> {/* 25% smaller */}
           </div>
-
-          <div className="mt-4 space-y-3">
+          <div className="mt-3 space-y-2.25">
             {feature.description.map((point, idx) => (
-              <p key={idx} className="text-sm text-gray-300 leading-relaxed font-manrope">
+              <p key={idx} className="text-xs leading-relaxed font-manrope"> {/* 25% smaller */}
                 {point}
               </p>
             ))}
           </div>
-
           {feature.highlights && (
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-1.5">
               {feature.highlights.map((highlight, idx) => (
                 <span
                   key={idx}
-                  className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80 border border-white/10 font-space"
+                  className="text-[10px] px-1.5 py-0.75 rounded-full bg-white/10 text-white/80 border border-white/10 font-space"
                 >
                   {highlight}
                 </span>
               ))}
             </div>
           )}
-
           {isLarge && (
-            <div className="mt-4 pt-3 border-t border-white/5">
+            <div className="mt-3 pt-2.25 border-t border-white/5">
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-400 font-manrope">Featured capability</div>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-gray-400 font-manrope">Featured capability</div> {/* 25% smaller */}
+                <div className="text-[10px] text-gray-400">
                   {feature.title === "Conversation Flow"
                     ? "Advanced AI"
                     : feature.title === "Seamless Integration"
@@ -193,40 +188,35 @@ const FeatureCard: React.FC<{ feature: Feature }> = React.memo(({ feature }) => 
     </motion.div>
   )
 })
-
 FeatureCard.displayName = "FeatureCard"
 
 const KeyFeatures: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const lenisRef = useRef<Lenis | null>(null) // Add Lenis ref
+  const lenisRef = useRef<Lenis | null>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   })
-  // Initialize Lenis
+
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
       wheelMultiplier: 1.2,
     })
-
     lenisRef.current = lenis
-
     function raf(time: number) {
       lenis.raf(time)
       requestAnimationFrame(raf)
     }
-
     requestAnimationFrame(raf)
-
     return () => {
       lenis.destroy()
       lenisRef.current = null
     }
   }, [])
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"])
 
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "5%"])
   const [titleRef, titleInView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -237,27 +227,27 @@ const KeyFeatures: React.FC = () => {
       <div className="relative">
         <motion.div
           style={{ y: contentY, willChange: "transform, opacity" }}
-          className="relative z-20 pt-16 pb-12 px-4 sm:px-6 lg:px-8"
+          className="relative z-20 pt-12 pb-9 px-3 sm:px-4.5 lg:px-6"
         >
           <motion.div
             ref={titleRef}
-            initial={{ opacity: 0, y: 20 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="text-center max-w-3xl mx-auto mb-12"
+            className="text-center max-w-3xl mx-auto mb-9"
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400 }}
-              className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-4 font-space"
+              className="inline-block px-3 py-0.75 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-medium mb-3 font-space" 
             >
               Core Capabilities
             </motion.div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 font-space">Advanced Voice AI Features</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 font-space">Advanced Voice AI Features</h2> {/* Slightly adjusted */}
             <motion.div
-              className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-6"
+              className="w-18 h-0.75 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-4.5"
               animate={{
-                width: [0, 96],
+                width: [0, 72],
                 opacity: [0, 1],
               }}
               transition={{
@@ -265,13 +255,12 @@ const KeyFeatures: React.FC = () => {
                 delay: 0.3,
               }}
             />
-            <p className="text-lg text-white/80 font-manrope">
+            <p className="text-base text-white/80 font-manrope">
               Transform user interactions with our comprehensive suite of voice AI technologies
             </p>
           </motion.div>
-
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-4 auto-rows-fr">
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-3 auto-rows-fr">
               <div className="md:col-span-2">
                 <FeatureCard feature={features[0]} />
               </div>
@@ -291,30 +280,28 @@ const KeyFeatures: React.FC = () => {
           </div>
         </motion.div>
       </div>
-
-      <section className="relative py-12 px-4 sm:px-6 lg:px-8 ">
+      <section className="relative py-9 px-3 sm:px-4.5 lg:px-6">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-9"
           >
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 font-space">Enterprise-Grade Solutions</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2.25 font-space">Enterprise-Grade Solutions</h2> {/* Slightly adjusted */}
             <motion.div
-              className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-6"
+              className="w-15 h-0.75 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-4.5"
               initial={{ width: 0, opacity: 0 }}
-              whileInView={{ width: 80, opacity: 1 }}
+              whileInView={{ width: 60, opacity: 1 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             />
-            <p className="max-w-2xl mx-auto text-base sm:text-lg text-gray-300 font-manrope">
+            <p className="max-w-2xl mx-auto text-sm sm:text-base text-gray-300 font-manrope">
               Robust features designed for business-critical applications
             </p>
           </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 auto-rows-fr">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-3 auto-rows-fr">
             <div className="md:col-span-2">
               <FeatureCard feature={features[5]} />
             </div>
@@ -331,25 +318,24 @@ const KeyFeatures: React.FC = () => {
               <FeatureCard feature={features[9]} />
             </div>
           </div>
-
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
-            className="mt-16 text-center"
+            className="mt-12 text-center"
           >
             <Link href="/#contact">
               <motion.button
-                className="group relative px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden font-space"
-                whileHover={{ y: -5 }}
+                className="group relative px-6 py-2.25 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden font-space"
+                whileHover={{ y: -3.75 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <span className="relative z-10">Get Started Today</span>
                 <motion.div className="absolute inset-0 h-full w-full bg-gradient-to-r from-purple-700 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 <ArrowRight
-                  size={16}
-                  className="inline-block ml-2 relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+                  size={12}
+                  className="inline-block ml-1.5 relative z-10 group-hover:translate-x-0.75 transition-transform duration-300"
                 />
               </motion.button>
             </Link>
@@ -359,5 +345,4 @@ const KeyFeatures: React.FC = () => {
     </div>
   )
 }
-
 export default KeyFeatures

@@ -29,12 +29,10 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true)
-
     // Simulate loading delay
     const timer = setTimeout(() => {
       setIsLoaded(true)
     }, 800)
-
     return () => {
       setMounted(false)
       clearTimeout(timer)
@@ -68,43 +66,43 @@ export default function Navbar() {
 
   const glassStyle = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    backdropFilter: "blur(16px)",
-    WebkitBackdropFilter: "blur(16px)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
   }
 
   const navbarVariants = {
-    hidden: { y: -100, opacity: 0 },
+    hidden: { y: -75, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6,
+        duration: 0.45,
         ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.075,
+        delayChildren: 0.15,
       },
     },
   }
 
   const itemVariants = {
-    hidden: { y: -20, opacity: 0 },
+    hidden: { y: -15, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.375,
         ease: [0.22, 1, 0.36, 1],
       },
     },
   }
 
   const logoVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
+    hidden: { scale: 0.6, opacity: 0 },
     visible: {
       scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.375,
         ease: [0.22, 1, 0.36, 1],
       },
     },
@@ -115,27 +113,26 @@ export default function Navbar() {
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-10rem)] max-w-4xl mx-auto backdrop-blur-md h-20 z-40 rounded-2xl"
+        transition={{ duration: 0.375 }}
+        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-8rem)] max-w-3xl mx-auto backdrop-blur-md h-16 z-40 rounded-xl"
       />
-
       <motion.header
         initial="hidden"
         animate={isLoaded ? "visible" : "hidden"}
         variants={navbarVariants}
-        className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-10rem)] max-w-4xl mx-auto bg-black/50 z-50 rounded-2xl shadow-lg shadow-purple-500/10"
+        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-8rem)] max-w-3xl mx-auto bg-black/50 z-50 rounded-xl shadow-lg shadow-purple-500/10"
       >
-        <div className="container mx-auto px-6 flex items-center justify-between h-20">
-          <div className="flex items-center gap-10">
+        <div className="container mx-auto px-4 flex items-center justify-between h-16">
+          <div className="flex items-center gap-8">
             <motion.div variants={logoVariants}>
               <Link href="/" className="flex items-center group">
-                <div className="w-10 h-10 bg-white/10 flex items-center justify-center group-hover:shadow-md group-hover:shadow-purple-500/50 transition-all duration-300 rounded-lg">
+                <div className="w-8 h-8 bg-white/10 flex items-center justify-center group-hover:shadow-md group-hover:shadow-purple-500/50 transition-all duration-225 rounded-lg">
                   <Image
                     src="/logo.png"
                     alt="Sampark AI Logo"
-                    width={48}
-                    height={48}
-                    className="w-9 h-9 object-contain"
+                    width={36}
+                    height={36}
+                    className="w-7 h-7 object-contain"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.onerror = null
@@ -144,13 +141,12 @@ export default function Navbar() {
                     }}
                   />
                 </div>
-                <motion.span variants={itemVariants} className="ml-3 text-white font-bold text-xl hidden sm:block">
+                <motion.span variants={itemVariants} className="ml-2 text-white font-bold text-lg hidden sm:block">
                   Sampark AI
                 </motion.span>
               </Link>
             </motion.div>
-
-            <nav className="hidden md:flex items-center space-x-4">
+            <nav className="hidden md:flex items-center space-x-3">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.title}
@@ -163,41 +159,40 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "px-4 py-3 text-base rounded-lg flex items-center text-gray-300 hover:text-white transition-colors relative group font-medium",
+                      "px-3 py-2 text-sm rounded-lg flex items-center text-gray-300 hover:text-white transition-colors relative group font-medium",
                       openDropdown === item.title && "text-white",
                     )}
                   >
                     {item.title}
                     {item.dropdown && (
                       <ChevronDown
-                        className={`ml-2 h-5 w-5 transition-transform duration-300 ${
+                        className={`ml-1.5 h-4 w-4 transition-transform duration-225 ${
                           openDropdown === item.title ? "rotate-180" : ""
                         }`}
                       />
                     )}
-                    <span className="absolute bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                    <span className="absolute bottom-1 left-0 w-full h-[1.5px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-225 origin-left"></span>
                   </Link>
-
                   {item.dropdown && openDropdown === item.title && (
-                    <div className="absolute top-full left-0 mt-2 w-[300px] rounded-xl overflow-hidden">
+                    <div className="absolute top-full left-0 mt-1.5 w-[225px] rounded-xl overflow-hidden">
                       <div
-                        className="absolute inset-0 bg-black/30 backdrop-blur-[16px]"
-                        style={{ WebkitBackdropFilter: "blur(16px)" }}
+                        className="absolute inset-0 bg-black/30 backdrop-blur-[12px]"
+                        style={{ WebkitBackdropFilter: "blur(12px)" }}
                       />
                       <div className="relative z-10 border border-white/10 shadow-xl rounded-xl">
-                        <div className="p-3">
+                        <div className="p-2">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.href}
                               href={dropdownItem.href}
-                              className="flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors"
+                              className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors"
                             >
-                              <div className="flex-shrink-0 mt-1 w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-gray-100">
+                              <div className="flex-shrink-0 mt-1 w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-gray-100">
                                 {dropdownItem.icon}
                               </div>
                               <div>
                                 <div className="font-semibold text-white">{dropdownItem.title}</div>
-                                <div className="text-sm text-gray-400 mt-1">{dropdownItem.description}</div>
+                                <div className="text-xs text-gray-400 mt-0.5">{dropdownItem.description}</div>
                               </div>
                             </Link>
                           ))}
@@ -209,14 +204,13 @@ export default function Navbar() {
               ))}
             </nav>
           </div>
-
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {authItems.map((item, index) => (
               <motion.div key={item.title} variants={itemVariants} custom={index + navItems.length}>
                 <Link
                   href={item.href}
                   className={cn(
-                    "hidden md:block px-6 py-3 text-base rounded-full transition-all duration-300 font-medium",
+                    "hidden md:block px-5 py-2 text-sm rounded-full transition-all duration-225 font-medium",
                     item.variant === "text"
                       ? "text-gray-300 hover:text-white hover:bg-white/5"
                       : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-0.5",
@@ -226,31 +220,28 @@ export default function Navbar() {
                 </Link>
               </motion.div>
             ))}
-
             <motion.button
               variants={itemVariants}
-              className="md:hidden p-3 focus:outline-none text-gray-300 hover:text-white transition-colors"
+              className="md:hidden p-2 focus:outline-none text-gray-300 hover:text-white transition-colors"
               onClick={toggleMobileMenu}
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </motion.button>
           </div>
         </div>
-
         {mounted &&
           mobileMenuOpen &&
           createPortal(
             <div className="fixed inset-0 z-40 lg:hidden">
               <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={toggleMobileMenu} />
-
               <motion.div
-                initial={{ x: 300, opacity: 0 }}
+                initial={{ x: 225, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 300, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ x: 225, opacity: 0 }}
+                transition={{ duration: 0.225, ease: [0.22, 1, 0.36, 1] }}
                 className={cn(
-                  "absolute top-28 right-4",
-                  "w-[300px] rounded-2xl",
+                  "absolute top-21 right-3",
+                  "w-[225px] rounded-xl",
                   "shadow-xl shadow-purple-500/10",
                   "overflow-hidden",
                   "border border-white/10",
@@ -258,42 +249,41 @@ export default function Navbar() {
                 style={glassStyle}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="p-3 space-y-2">
+                <div className="p-2 space-y-1.5">
                   {navItems.map((item) => (
-                    <div key={item.title} className="space-y-2">
+                    <div key={item.title} className="space-y-1.5">
                       {item.dropdown ? (
                         <>
                           <button
                             onClick={() => toggleExpanded(item.title)}
                             className={cn(
                               "flex w-full items-center justify-between",
-                              "px-5 py-4 text-base font-medium text-gray-100",
+                              "px-4 py-3 text-sm font-medium text-gray-100",
                               "rounded-lg hover:bg-white/10 transition-colors",
                             )}
                           >
                             <span>{item.title}</span>
                             <ChevronDown
                               className={cn(
-                                "h-5 w-5 transition-transform text-gray-300",
+                                "h-4 w-4 transition-transform text-gray-300",
                                 expandedItem === item.title ? "rotate-180" : "",
                               )}
                             />
                           </button>
-
                           {expandedItem === item.title && (
-                            <div className="ml-3 pl-6 space-y-2 border-l-2 border-purple-500/30">
+                            <div className="ml-2 pl-4 space-y-1.5 border-l-2 border-purple-500/30">
                               {item.dropdown.map((subItem) => (
                                 <Link
                                   key={subItem.href}
                                   href={subItem.href}
                                   className={cn(
-                                    "flex items-center px-5 py-3",
-                                    "text-base text-gray-300 hover:bg-white/10",
+                                    "flex items-center px-4 py-2.5",
+                                    "text-sm text-gray-300 hover:bg-white/10",
                                     "rounded-lg transition-colors",
                                   )}
                                   onClick={toggleMobileMenu}
                                 >
-                                  {subItem.icon && <span className="mr-3 text-gray-300">{subItem.icon}</span>}
+                                  {subItem.icon && <span className="mr-2 text-gray-300">{subItem.icon}</span>}
                                   {subItem.title}
                                 </Link>
                               ))}
@@ -304,8 +294,8 @@ export default function Navbar() {
                         <Link
                           href={item.href}
                           className={cn(
-                            "flex items-center px-5 py-4",
-                            "text-base font-medium text-gray-100",
+                            "flex items-center px-4 py-3",
+                            "text-sm font-medium text-gray-100",
                             "rounded-lg hover:bg-white/10 transition-colors",
                           )}
                           onClick={toggleMobileMenu}
@@ -315,16 +305,15 @@ export default function Navbar() {
                       )}
                     </div>
                   ))}
-
-                  <div className="mt-6 space-y-3 pt-4 border-t border-white/10">
+                  <div className="mt-4 space-y-2 pt-3 border-t border-white/10">
                     {authItems.map((item) => (
                       <Link
                         key={item.title}
                         href={item.href}
                         className={cn(
-                          "flex items-center justify-center px-6 py-4",
-                          "text-base font-semibold",
-                          "rounded-lg transition-all duration-300",
+                          "flex items-center justify-center px-5 py-3",
+                          "text-sm font-semibold",
+                          "rounded-lg transition-all duration-225",
                           item.variant === "text"
                             ? "text-gray-100 hover:bg-white/10"
                             : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white",

@@ -1,10 +1,8 @@
 "use client"
-import { useEffect,useRef } from "react"
-import { motion } from "framer-motion"
-import { useInView } from "react-intersection-observer"
-import { GlowingEffect } from "@/components/ui/glowing-effect"
+import React, { useEffect, useRef } from "react"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
+import { GlowingEffect } from "@/components/ui/glowing-effect"
 import Lenis from "lenis"
 
 interface Industry {
@@ -24,12 +22,7 @@ const industries: Industry[] = [
     icon: "🏥",
     description:
       "Transform patient communication with AI-powered voice solutions that handle sensitive healthcare interactions while maintaining compliance.",
-    useCases: [
-      "Automated appointment scheduling",
-      "Insurance verification",
-      "Prescription refill requests",
-      "Symptom checking",
-    ],
+    useCases: ["Automated appointment scheduling", "Insurance verification", "Prescription refill requests", "Symptom checking"],
     benefits: ["HIPAA compliant", "24/7 availability", "Reduces staff workload"],
     color: "from-violet-600 to-purple-700",
     size: "sm",
@@ -84,99 +77,58 @@ const industries: Industry[] = [
 interface IndustryCardProps {
   industry: Industry
 }
-const Industries: React.FC = () => {
-  const lenisRef = useRef<Lenis | null>(null) // Properly declare lenisRef
-  const [titleRef, titleInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
+
 const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
   const isLarge = industry.size === "lg"
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  })
-    // Initialize Lenis
-    useEffect(() => {
-      const lenis = new Lenis({
-        lerp: 0.1,
-        smoothWheel: true,
-        wheelMultiplier: 1.2,
-      })
-  
-      lenisRef.current = lenis
-  
-      function raf(time: number) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
-      }
-  
-      requestAnimationFrame(raf)
-  
-      return () => {
-        lenis.destroy()
-        lenisRef.current = null
-      }
-    }, [])
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`${isLarge ? "md:col-span-2" : ""} h-full`}
-    >
-      <div className="relative h-full rounded-xl border border-gray-800/50 p-1.5 transition-all duration-300 hover:border-gray-700/70 group">
-        <GlowingEffect spread={30} glow={true} disabled={false} proximity={64} inactiveZone={0.01} variant="default" />
-        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-lg bg-gray-900/70 p-5 backdrop-blur-sm">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">{industry.icon}</span>
+    <div className={`${isLarge ? "md:col-span-2" : ""} h-full`}>
+      <div className="relative h-full rounded-xl border border-gray-800/50 p-1.2 transition-all duration-300 hover:border-gray-700/70 group">
+        <GlowingEffect spread={25} glow={true} disabled={false} proximity={50} inactiveZone={0.01} variant="default" />
+        <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-lg bg-gray-900/70 p-4 backdrop-blur-sm">
+          <div className="flex items-start gap-2.5">
+            <span className="text-xl">{industry.icon}</span>
             <div>
-              <h3 className="text-lg font-bold text-white font-space">{industry.name}</h3>
+              <h3 className="text-base font-bold text-white font-space">{industry.name}</h3>
               {industry.stat && (
-                <div className="flex items-baseline gap-1 mt-1">
-                  <span className="text-xl font-bold text-white font-space">{industry.stat.value}</span>
-                  <span className="text-xs text-gray-400 font-manrope">{industry.stat.label}</span>
+                <div className="flex items-baseline gap-1 mt-0.5">
+                  <span className="text-lg font-bold text-white font-space">{industry.stat.value}</span>
+                  <span className="text-[10px] text-gray-400 font-manrope">{industry.stat.label}</span>
                 </div>
               )}
             </div>
           </div>
-
-          <div className="mt-4 space-y-3">
-            <p className="text-sm text-gray-300 leading-relaxed font-manrope">{industry.description}</p>
-
-            <div className="pt-2">
-              <h4 className="text-xs font-semibold text-purple-300 uppercase tracking-wider mb-2 font-space">
+          <div className="mt-3 space-y-2">
+            <p className="text-xs text-gray-300 leading-relaxed font-manrope">{industry.description}</p>
+            <div className="pt-1.5">
+              <h4 className="text-[10px] font-semibold text-purple-300 uppercase tracking-wider mb-1.5 font-space">
                 Key Use Cases
               </h4>
-              <ul className="space-y-1.5">
+              <ul className="space-y-1">
                 {industry.useCases.map((useCase, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-emerald-400 mr-2">•</span>
-                    <span className="text-sm text-gray-300 font-manrope">{useCase}</span>
+                    <span className="text-emerald-400 mr-1.5">•</span>
+                    <span className="text-xs text-gray-300 font-manrope">{useCase}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-1.5">
             {industry.benefits.map((benefit, idx) => (
               <span
                 key={idx}
-                className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/80 border border-white/10 font-space"
+                className="text-[10px] px-1.5 py-0.75 rounded-full bg-white/10 text-white/80 border border-white/10 font-space"
               >
                 {benefit}
               </span>
             ))}
           </div>
-
           {isLarge && (
-            <div className="mt-4 pt-3 border-t border-white/5">
+            <div className="mt-3 pt-2 border-t border-white/5">
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-400 font-manrope">Industry specialist</div>
-                <div className="text-xs text-gray-400">
+                <div className="text-[10px] text-gray-400 font-manrope">Industry specialist</div>
+                <div className="text-[10px] text-gray-400">
                   {industry.name === "Hospitality" ? "Multilingual support" : ""}
                 </div>
               </div>
@@ -184,95 +136,85 @@ const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
+const Industries: React.FC = () => {
+  const lenisRef = useRef<Lenis | null>(null)
 
+  // Initialize Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true,
+      wheelMultiplier: 1.2,
+    })
+    lenisRef.current = lenis
+
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+
+    return () => {
+      lenis.destroy()
+      lenisRef.current = null
+    }
+  }, [])
 
   return (
     <div className="relative overflow-hidden" id="industries">
-      <div className="relative">
-        <div className="relative z-20 pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-          <motion.div
-            ref={titleRef}
-            initial={{ opacity: 0, y: 20 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="text-center max-w-4xl mx-auto mb-16"
-          >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400 }}
-              className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-4 font-space"
-            >
-              Industry Solutions
-            </motion.div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 font-space">
-              Transform{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-                Industry-Specific
-              </span>{" "}
-              Operations
-            </h2>
-            <motion.div
-              className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-6"
-              animate={{
-                width: [0, 96],
-                opacity: [0, 1],
-              }}
-              transition={{
-                duration: 0.8,
-                delay: 0.3,
-              }}
-            />
-            <p className="text-lg text-white/80 font-manrope">
-              Our AI voice solutions are tailored to meet the unique challenges and requirements of your industry.
-            </p>
-          </motion.div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-5 auto-rows-fr">
-              <div className="md:col-span-2">
-                <IndustryCard industry={industries[0]} />
-              </div>
-              <div className="md:col-span-2">
-                <IndustryCard industry={industries[1]} />
-              </div>
-              <div className="md:col-span-2">
-                <IndustryCard industry={industries[3]} />
-              </div>
-              <div className="md:col-span-3">
-                <IndustryCard industry={industries[2]} />
-              </div>
-              <div className="md:col-span-3">
-                <IndustryCard industry={industries[4]} />
-              </div>
+      <div className="relative z-20 pt-18 pb-15 px-3 sm:px-4.5 lg:px-6">
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <div className="inline-block px-3 py-0.75 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[10px] font-medium mb-3 font-space">
+            Industry Solutions
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 font-space">
+            Transform{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+              Industry-Specific
+            </span>{" "}
+            Operations
+          </h2>
+          <div className="w-18 h-0.75 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-4.5" />
+          <p className="text-sm text-white/80 font-manrope">
+            Our AI voice solutions are tailored to meet the unique challenges and requirements of your industry.
+          </p>
+        </div>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-3 auto-rows-fr">
+            <div className="md:col-span-2">
+              <IndustryCard industry={industries[0]} />
+            </div>
+            <div className="md:col-span-2">
+              <IndustryCard industry={industries[1]} />
+            </div>
+            <div className="md:col-span-2">
+              <IndustryCard industry={industries[3]} />
+            </div>
+            <div className="md:col-span-3">
+              <IndustryCard industry={industries[2]} />
+            </div>
+            <div className="md:col-span-3">
+              <IndustryCard industry={industries[4]} />
             </div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="mt-16 text-center"
-          >
-            <Link href="/#contact">
-              <motion.button
-                className="group relative px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden font-space"
-                whileHover={{ y: -5 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span className="relative z-10">Get Industry Solution</span>
-                <motion.div className="absolute inset-0 h-full w-full bg-gradient-to-r from-purple-700 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                <ChevronRight
-                  size={16}
-                  className="inline-block ml-2 relative z-10 group-hover:translate-x-1 transition-transform duration-300"
-                />
-              </motion.button>
-            </Link>
-          </motion.div>
+        </div>
+        <div className="mt-12 text-center">
+          <Link href="/#contact">
+            <button
+              className="group relative px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden font-space"
+            >
+              <span className="relative z-10">Get Industry Solution</span>
+              <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-purple-700 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+              <ChevronRight
+                size={12}
+                className="inline-block ml-1.5 relative z-10 group-hover:translate-x-0.75 transition-transform duration-300"
+              />
+            </button>
+          </Link>
         </div>
       </div>
     </div>

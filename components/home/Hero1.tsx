@@ -59,16 +59,16 @@ export default function Hero1({ onTypingComplete }: SplineHeroProps) {
           className="absolute inset-0 pointer-events-auto"
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{
-            scale: contentLoaded ? 1.25 : 1.2,
+            scale: contentLoaded ? 1.2 : 1.25,
             opacity: contentLoaded ? 1 : 0,
             transition: {
-              duration: 1.2,
+              duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
             },
           }}
         >
           <Spline
-            scene="https://prod.spline.design/ullFdbuDcgvdCgDq/scene.splinecode"
+            scene="https://prod.spline.design/ullFdbuDcgvdCgDq/scene.splinecode "
             onLoad={() => setContentLoaded(true)}
             style={{
               height: "100%",
@@ -79,10 +79,10 @@ export default function Hero1({ onTypingComplete }: SplineHeroProps) {
 
         {/* Dark overlay for better text visibility */}
         <motion.div
-          className="absolute inset-0 bg-black/30 mask-fade-bottom pointer-events-none"
+          className="absolute inset-0 bg-black/40 mask-fade-bottom pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{
-            opacity: contentLoaded ? 0.3 : 0,
+            opacity: contentLoaded ? 0.4 : 0,
             transition: { delay: 0.5 },
           }}
         />
@@ -94,12 +94,12 @@ export default function Hero1({ onTypingComplete }: SplineHeroProps) {
       {/* Content Container */}
       <AnimatePresence>
         {contentLoaded && (
-          <div className="text-center relative z-10 px-4 pointer-events-none w-full max-w-4xl mx-auto">
+          <div className="text-center relative z-10 px-3 sm:px-4 pointer-events-none w-full max-w-4xl mx-auto">
             <div className="pointer-events-auto flex flex-col items-center">
               {/* Typewriter Effect for the heading */}
-              <ContentReveal delay={0.6}>
-                <div className="mb-6 w-full">
-                  <div className="text-4xl md:text-6xl font-bold drop-shadow-lg hero-text font-space tracking-tight">
+              <ContentReveal delay={0.45}>
+                <div className="mb-4 w-full">
+                  <div className="text-3xl md:text-4xl font-bold drop-shadow-lg hero-text font-space tracking-tight">
                     {!typingComplete ? (
                       <TypewriterEffect
                         words={[
@@ -121,7 +121,7 @@ export default function Hero1({ onTypingComplete }: SplineHeroProps) {
                         <span className="text-white">Revolutionizing Call Centers with </span>
                         <FlipWords
                           words={["Conversational AI", "Sampark AI", "Voice Intelligence", "Smart Assistants"]}
-                          duration={3000}
+                          duration={2000}
                           className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500"
                         />
                       </div>
@@ -130,37 +130,37 @@ export default function Hero1({ onTypingComplete }: SplineHeroProps) {
                 </div>
               </ContentReveal>
 
-              <ContentReveal delay={0.8}>
+              <ContentReveal delay={0.6}>
                 <div className="w-full">
                   <TextGenerateEffect
                     words="AI-driven phone agents capable of understanding and responding to customer inquiries, similar to your traditional Call Center."
-                    className="mt-2 text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-manrope"
+                    className="mt-1.5 text-base md:text-lg text-white/90 max-w-xl mx-auto font-manrope"
                   />
                 </div>
               </ContentReveal>
 
-              <ContentReveal delay={1.0}>
-                <div className="mt-12 w-full flex justify-center">
+              <ContentReveal delay={0.75}>
+                <div className="mt-8 w-full flex justify-center">
                   <Link href="/register" className="pointer-events-auto">
                     <motion.button
-                      className="relative px-8 py-3 overflow-hidden rounded-full group font-outfit"
+                      className="relative px-6 py-2 overflow-hidden rounded-lg group font-outfit"
                       onMouseEnter={() => setIsHovered(true)}
                       onMouseLeave={() => setIsHovered(false)}
-                      whileHover={{ y: -5 }}
+                      whileHover={{ y: -3 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <div className="absolute inset-0 w-full h-full transition-all duration-300 rounded-full opacity-70 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:opacity-100"></div>
-                      <div className="relative flex items-center gap-2">
-                        <span className="relative z-10 font-medium text-white">Get Started</span>
+                      <div className="absolute inset-0 w-full h-full transition-all duration-225 rounded-lg opacity-70 bg-gradient-to-r from-purple-600 to-blue-600 group-hover:opacity-100"></div>
+                      <div className="relative flex items-center gap-1.5">
+                        <span className="relative z-10 font-medium text-white text-sm">Get Started</span>
                         <motion.span
-                          animate={{ x: isHovered ? 5 : 0 }}
-                          transition={{ duration: 0.3 }}
+                          animate={{ x: isHovered ? 4 : 0 }}
+                          transition={{ duration: 0.225 }}
                           className="relative z-10"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="18"
-                            height="18"
+                            width="16"
+                            height="16"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
