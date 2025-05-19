@@ -42,10 +42,11 @@ export default function Navbar() {
   const navItems: NavItem[] = [
     { title: "About", href: "#about" },
     { title: "Features", href: "#features" },
+    { title: "Pricing", href: "#pricing" },
     { title: "Contact Us", href: "#contact" },
   ]
 
-  const authItems: NavItem[] = [{ title: "Get Started", href: "/get-started", variant: "primary" }]
+  const authItems: NavItem[] = [{ title: "Get Started", href: "/", variant: "primary" }]
 
   const handleMouseEnter = (title: string) => {
     setOpenDropdown(title)
@@ -114,16 +115,16 @@ export default function Navbar() {
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 0.375 }}
-        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-8rem)] max-w-3xl mx-auto backdrop-blur-md h-16 z-40 rounded-xl"
+        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl mx-auto h-16 z-40 rounded-xl"
       />
       <motion.header
         initial="hidden"
         animate={isLoaded ? "visible" : "hidden"}
         variants={navbarVariants}
-        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-8rem)] max-w-3xl mx-auto bg-black/50 z-50 rounded-xl shadow-lg shadow-purple-500/10"
+        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl mx-auto bg-black/50 z-50 rounded-xl shadow-lg shadow-purple-500/10"
       >
-        <div className="container mx-auto px-4 flex items-center justify-between h-16">
-          <div className="flex items-center gap-8">
+        <div className="container mx-auto px-6 flex items-center justify-between h-16">
+          <div className="flex items-center gap-10">
             <motion.div variants={logoVariants}>
               <Link href="/" className="flex items-center group">
                 <div className="w-8 h-8 bg-white/10 flex items-center justify-center group-hover:shadow-md group-hover:shadow-purple-500/50 transition-all duration-225 rounded-lg">
@@ -146,7 +147,7 @@ export default function Navbar() {
                 </motion.span>
               </Link>
             </motion.div>
-            <nav className="hidden md:flex items-center space-x-3">
+            <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.title}
@@ -159,7 +160,7 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "px-3 py-2 text-sm rounded-lg flex items-center text-gray-300 hover:text-white transition-colors relative group font-medium",
+                      "px-4 py-2 text-sm rounded-lg flex items-center text-gray-300 hover:text-white transition-colors relative group font-medium",
                       openDropdown === item.title && "text-white",
                     )}
                   >
@@ -204,7 +205,7 @@ export default function Navbar() {
               ))}
             </nav>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {authItems.map((item, index) => (
               <motion.div key={item.title} variants={itemVariants} custom={index + navItems.length}>
                 <Link
