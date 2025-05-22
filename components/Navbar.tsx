@@ -6,7 +6,7 @@ import Link from "next/link"
 import { ChevronDown, Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { createPortal } from "react-dom"
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 interface NavItem {
   title: string
@@ -27,9 +27,16 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
 
+  // Scroll animation
+  const { scrollY } = useScroll()
+  const navbarBackground = useTransform(scrollY, [0, 100], ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.85)"])
+  const navbarHeight = useTransform(scrollY, [0, 100], ["4rem", "3.5rem"])
+  const navbarPadding = useTransform(scrollY, [0, 100], ["1rem", "0.75rem"])
+  const navbarBorderOpacity = useTransform(scrollY, [0, 100], [0, 1])
+  const navbarShadowOpacity = useTransform(scrollY, [0, 100], [0.1, 0.25])
+
   useEffect(() => {
     setMounted(true)
-    // Simulate loading delay
     const timer = setTimeout(() => {
       setIsLoaded(true)
     }, 800)
@@ -43,7 +50,7 @@ export default function Navbar() {
     { title: "About", href: "#about" },
     { title: "Features", href: "#features" },
     { title: "Pricing", href: "#pricing" },
-    { title: "Contact Us", href: "#contact" },
+    { title: "Contact", href: "#contact" },
   ]
 
   const authItems: NavItem[] = [{ title: "Get Started", href: "/", variant: "primary" }]
@@ -121,33 +128,46 @@ export default function Navbar() {
         initial="hidden"
         animate={isLoaded ? "visible" : "hidden"}
         variants={navbarVariants}
-        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl mx-auto bg-black/50 z-50 rounded-xl shadow-lg shadow-purple-500/10"
+        style={{
+          background: navbarBackground,
+          height: navbarHeight,
+          paddingTop: navbarPadding,
+          paddingBottom: navbarPadding,
+          boxShadow: useTransform(navbarShadowOpacity, (opacity) => `0 8px 32px rgba(128, 90, 213, ${opacity})`),
+          borderColor: useTransform(navbarBorderOpacity, (opacity) => `rgba(255, 255, 255, ${opacity * 0.1})`),
+          borderWidth: "1px",
+          borderStyle: "solid",
+        }}
+        className="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl mx-auto z-50 rounded-xl backdrop-blur-xl transition-all duration-300"
       >
-        <div className="container mx-auto px-6 flex items-center justify-between h-16">
-          <div className="flex items-center gap-10">
-            <motion.div variants={logoVariants}>
-              <Link href="/" className="flex items-center group">
-                <div className="w-8 h-8 bg-white/10 flex items-center justify-center group-hover:shadow-md group-hover:shadow-purple-500/50 transition-all duration-225 rounded-lg">
-                  <Image
-                    src="/logo.png"
-                    alt="Sampark AI Logo"
-                    width={36}
-                    height={36}
-                    className="w-7 h-7 object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.onerror = null
-                      target.src =
-                        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiwyQTEwLDEwIDAgMCwxIDIyLDEyQTEwLDEwIDAgMCwxIDEyLDIyQTEwLDEwIDAgMCwxIDIsMTJBMTAsMTAgMCAwLDEgMTIsMk0xMiw0QTgsOCAwIDAsMCA0LDEyQTgsOCAwIDAsMCAxMiwyMEE4LDggMCAwLDAgMjAsMTJBOCw4IDAgMCwwIDEyLDRNNiwxM0gxOEg2WiIvPjwvc3ZnPg=="
-                    }}
-                  />
-                </div>
-                <motion.span variants={itemVariants} className="ml-2 text-white font-bold text-lg hidden sm:block">
-                  Sampark AI
-                </motion.span>
-              </Link>
-            </motion.div>
-            <nav className="hidden md:flex items-center gap-1">
+        <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between h-full">
+          {/* Logo on the left */}
+          <motion.div variants={logoVariants} className="flex-shrink-0">
+            <Link href="/" className="flex items-center group">
+              <div className="w-9 h-9 bg-gradient-to-br from-purple-600/80 to-blue-600/80 flex items-center justify-center group-hover:shadow-lg group-hover:shadow-purple-500/50 transition-all duration-300 rounded-lg">
+                <Image
+                  src="/logo.png"
+                  alt="Sampark AI Logo"
+                  width={36}
+                  height={36}
+                  className="w-7 h-7 object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.onerror = null
+                    target.src =
+                      "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiwyQTEwLDEwIDAgMCwxIDIyLDEyQTEwLDEwIDAgMCwxIDEyLDIyQTEwLDEwIDAgMCwxIDIsMTJBMTAsMTAgMCAwLDEgMTIsMk0xMiw0QTgsOCAwIDAsMCA0LDEyQTgsOCAwIDAsMCAxMiwyMEE4LDggMCAwLDAgMjAsMTJBOCw4IDAgMCwwIDEyLDRNNiwxM0gxOEg2WiIvPjwvc3ZnPg=="
+                  }}
+                />
+              </div>
+              <motion.span variants={itemVariants} className="ml-2.5 text-white font-bold text-lg hidden sm:block">
+                Sampark AI
+              </motion.span>
+            </Link>
+          </motion.div>
+
+          {/* Centered navigation items */}
+          <nav className="hidden md:flex items-center justify-center flex-1 px-8">
+            <div className="flex items-center gap-12">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.title}
@@ -160,40 +180,40 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "px-4 py-2 text-sm rounded-lg flex items-center text-gray-300 hover:text-white transition-colors relative group font-medium",
-                      openDropdown === item.title && "text-white",
+                      "px-4 py-2.5 text-base rounded-lg flex items-center text-gray-200 hover:text-white transition-all duration-300 relative group font-semibold tracking-wide",
+                      openDropdown === item.title && "text-white bg-white/5",
                     )}
                   >
                     {item.title}
                     {item.dropdown && (
                       <ChevronDown
-                        className={`ml-1.5 h-4 w-4 transition-transform duration-225 ${
+                        className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${
                           openDropdown === item.title ? "rotate-180" : ""
                         }`}
                       />
                     )}
-                    <span className="absolute bottom-1 left-0 w-full h-[1.5px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-225 origin-left"></span>
+                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"></span>
                   </Link>
                   {item.dropdown && openDropdown === item.title && (
-                    <div className="absolute top-full left-0 mt-1.5 w-[225px] rounded-xl overflow-hidden">
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[250px] rounded-xl overflow-hidden">
                       <div
-                        className="absolute inset-0 bg-black/30 backdrop-blur-[12px]"
-                        style={{ WebkitBackdropFilter: "blur(12px)" }}
+                        className="absolute inset-0 bg-black/60 backdrop-blur-[16px]"
+                        style={{ WebkitBackdropFilter: "blur(16px)" }}
                       />
-                      <div className="relative z-10 border border-white/10 shadow-xl rounded-xl">
+                      <div className="relative z-10 border border-white/10 shadow-2xl rounded-xl">
                         <div className="p-2">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.href}
                               href={dropdownItem.href}
-                              className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors"
+                              className="flex items-start gap-3 p-3.5 rounded-lg hover:bg-white/10 transition-colors"
                             >
-                              <div className="flex-shrink-0 mt-1 w-8 h-8 flex items-center justify-center rounded-lg bg-gray-800 text-gray-100">
+                              <div className="flex-shrink-0 mt-1 w-9 h-9 flex items-center justify-center rounded-lg bg-gradient-to-br from-purple-600/30 to-blue-600/30 text-white">
                                 {dropdownItem.icon}
                               </div>
                               <div>
                                 <div className="font-semibold text-white">{dropdownItem.title}</div>
-                                <div className="text-xs text-gray-400 mt-0.5">{dropdownItem.description}</div>
+                                <div className="text-xs text-gray-300 mt-1">{dropdownItem.description}</div>
                               </div>
                             </Link>
                           ))}
@@ -203,18 +223,20 @@ export default function Navbar() {
                   )}
                 </motion.div>
               ))}
-            </nav>
-          </div>
+            </div>
+          </nav>
+
+          {/* Get Started button on the right */}
           <div className="flex items-center gap-4">
             {authItems.map((item, index) => (
               <motion.div key={item.title} variants={itemVariants} custom={index + navItems.length}>
                 <Link
                   href={item.href}
                   className={cn(
-                    "hidden md:block px-5 py-2 text-sm rounded-full transition-all duration-225 font-medium",
+                    "hidden md:block px-4 py-1 text-base rounded-md transition-all duration-300 font-bold",
                     item.variant === "text"
-                      ? "text-gray-300 hover:text-white hover:bg-white/5"
-                      : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:shadow-lg hover:shadow-purple-500/20 transform hover:-translate-y-0.5",
+                      ? "text-gray-200 hover:text-white hover:bg-white/10"
+                      : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white hover:shadow-xl hover:shadow-purple-500/20 transform hover:-translate-y-0.5",
                   )}
                 >
                   {item.title}
@@ -230,6 +252,8 @@ export default function Navbar() {
             </motion.button>
           </div>
         </div>
+
+        {/* Mobile menu */}
         {mounted &&
           mobileMenuOpen &&
           createPortal(
